@@ -1,9 +1,18 @@
 import prompt from 'prompt-sync';
-import { AlunoView } from './modulos/Aluno/views/index';
+import { AlunoView } from './modulos/Aluno/views/index.js';
 
 const alunoView = new AlunoView();
 
 const input = prompt();
+
+function menuInicial() {
+    console.log('\n######### MENU #############');
+    console.log('1 - Modulo Aluno');
+    console.log('2 - Modulo Turma');
+    console.log('3 - Modulo Professor');
+    console.log('0 - Sair');
+    console.log('##############################');
+}
 
 function exibirMenu() {
     console.log('\n######### MENU #############');

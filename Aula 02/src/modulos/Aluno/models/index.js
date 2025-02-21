@@ -1,10 +1,9 @@
-export class AlunoModel {
+
+export class AlunoModel extends Pessoa {
     #matricula
     constructor(matricula, nome, email, senha) {
         this.#matricula = matricula
-        this.nome = nome
-        this.email = email
-        this.senha = senha
+        super(nome, email, senha)
     }
     // modificadores de acesso
     get getMatricula(){

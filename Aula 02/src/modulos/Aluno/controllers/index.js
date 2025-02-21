@@ -1,6 +1,6 @@
 import { alunos } from "../../../config/database.js";
 import { AlunoModel } from "../models/index.js";
-import bcrypt from 'bcrypt'
+
 export class AlunoController {
   criar(matricula, nome, email, senha) {
     try {

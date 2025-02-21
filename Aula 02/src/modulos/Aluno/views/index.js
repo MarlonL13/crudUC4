@@ -1,5 +1,5 @@
 import prompt from "prompt-sync";
-import { AlunoController } from "../controllers/index";
+import { AlunoController } from "../controllers/index.js";
 
 const alunoController = new AlunoController();
 const input = prompt();
