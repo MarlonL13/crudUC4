@@ -1,8 +1,11 @@
-// matricula, turma, disciplina
+import { Pessoa } from "./Pessoa.js";
 
-// encapsulamento, heranca, polimorfismo, abstração
-// classe
-// metodos
-// modificadores de acesso
-// get e set
-// organização da arquitetura. 
+class Professor extends Pessoa {
+  constructor(nome, telefone, email, senha, matricula, turma, disciplina) {
+    super(matricula, nome, telefone, email, senha);
+    this.disciplina = disciplina;
+    this.turma = turma;
+  }
+}
+
+export { Professor };
