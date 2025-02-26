@@ -1,28 +1,53 @@
-import { turmas } from "../../../config/database.js";
+import { turmas, professores, alunos } from "../../../config/database.js";
+import { AlunoModel } from "../../Aluno/models/index.js";
+import { Professor } from "../../Professor/models/index.js";
 import { TurmaModel } from "../models/index.js";
 
 export class TurmaController {
   // Criar nova turma
-  criar(cod, nome, sala, capacidade) {
+  criar(cod, nome, sala, capacidade, nomeAluno, nomeProfessor) {
     try {
-      const novaTurma = new TurmaModel(cod, nome, sala, capacidade);
-      turmas.push(novaTurma);
-      console.table(novaTurma);
+      const aluno = alunos.find((aluno) => aluno.nome === nomeAluno);
+      const professor = professores.find((professor) => professor.nome === nomeProfessor);
+      if (aluno instanceof AlunoModel && professor instanceof Professor) {
+        const novaTurma = new TurmaModel(
+          cod,
+          nome,
+          sala,
+          capacidade,
+          aluno,
+          professor
+        );
+        turmas.push(novaTurma);
+        console.table(novaTurma);
+      } else {
+        console.log("Aluno ou professor inválido(s)!");
+      }
     } catch (error) {
       console.error("Erro ao tentar criar turma", error.message);
     }
   }
 
   // Editar dados de uma turma
-  editar(cod, novoNome, novaSala, novaCapacidade) {
+  editar(cod, novoNome, novaSala, novaCapacidade, nomeNovoAluno, nomeNovoProfessor) {
     try {
+      const aluno = alunos.find((aluno) => aluno.nome === nomeNovoAluno);
+      const professor = professores.find((professor) => professor.nome === nomeNovoProfessor);
       const turma = turmas.find((turma) => turma.getCod === cod);
       if (!turma) {
         return console.log("Turma não encontrada!");
       }
+      if (!(aluno instanceof AlunoModel)) {
+        return console.log("Aluno inválido!");
+      }
+      if (!(professor instanceof Professor)) {
+        return console.log("Professor inválido!");
+      }
       turma.nome = novoNome || turma.nome;
       turma.sala = novaSala || turma.sala;
       turma.capacidade = novaCapacidade || turma.capacidade;
+      turma.aluno = novoAluno || turma.aluno;
+      turma.professor = novoProfessor || turma.professor;
     } catch (error) {
       console.error("Erro ao tentar atualizar a turma", error.message);
     }

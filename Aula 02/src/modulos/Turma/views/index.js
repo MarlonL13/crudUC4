@@ -1,5 +1,5 @@
 import prompt from "prompt-sync";
-import { TurmaController } from "../controllers/TurmaController.js";
+import { TurmaController } from "../controllers/index.js";
 
 const input = prompt();
 const controller = new TurmaController();
@@ -24,24 +24,40 @@ export class TurmaView {
     const nome = input("Digite o nome da nova turma: ");
     const sala = input("Digite a sala da nova turma: ");
     const capacidade = input("Digite a capacidade da turma: ");
+    const aluno = input("Digite o nome do aluno: ");
+    const professor = input("Digite o nome do professor: ");
 
     console.log("Criando nova turma...");
-    controller.criar(cod, nome, sala, parseInt(capacidade));
+    controller.criar(cod, nome, sala, parseInt(capacidade), aluno, professor);
   }
 
   // Editar uma turma existente
   editarTurma() {
     const cod = input("Digite o código da turma para editar: ");
-    const novoNome = input("Digite o novo nome da turma (deixe em branco para não alterar): ");
-    const novaSala = input("Digite a nova sala da turma (deixe em branco para não alterar): ");
-    const novaCapacidade = input("Digite a nova capacidade da turma (deixe em branco para não alterar): ");
+    const novoNome = input(
+      "Digite o novo nome da turma (deixe em branco para não alterar): "
+    );
+    const novaSala = input(
+      "Digite a nova sala da turma (deixe em branco para não alterar): "
+    );
+    const novaCapacidade = input(
+      "Digite a nova capacidade da turma (deixe em branco para não alterar): "
+    );
+    const novoAluno = input(
+      "Digite o nome do novo aluno (deixe em branco para não alterar): "
+    );
+    const novoProfessor = input(
+      "Digite o nome do novo professor (deixe em branco para não alterar): "
+    );
 
     console.log(`Editando turma com código: ${cod}`);
     controller.editar(
       cod,
       novoNome || undefined,
       novaSala || undefined,
-      novaCapacidade ? parseInt(novaCapacidade) : undefined
+      novaCapacidade ? parseInt(novaCapacidade) : undefined,
+      novoAluno || undefined,
+      novoProfessor || undefined
     );
   }
 
@@ -54,7 +70,9 @@ export class TurmaView {
 
   // Deletar todas as turmas
   deletarTodasTurmas() {
-    const confirmacao = input("Tem certeza que deseja deletar todas as turmas? (sim/não): ");
+    const confirmacao = input(
+      "Tem certeza que deseja deletar todas as turmas? (sim/não): "
+    );
     if (confirmacao.toLowerCase() === "sim") {
       console.log("Deletando todas as turmas...");
       controller.deletarTodos();
