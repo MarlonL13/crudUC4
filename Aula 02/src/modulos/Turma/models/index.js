@@ -1,6 +1,6 @@
 export class TurmaModel {
   #cod;
-  constructor(cod, nome, sala, capacidade, aluno, professor) {
+  constructor(cod, nome, sala, capacidade, aluno  = [], professor = []) {
     this.#cod = cod;
     this.nome = nome;
     this.sala = sala;

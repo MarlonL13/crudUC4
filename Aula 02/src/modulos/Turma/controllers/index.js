@@ -5,49 +5,73 @@ import { TurmaModel } from "../models/index.js";
 
 export class TurmaController {
   // Criar nova turma
-  criar(cod, nome, sala, capacidade, nomeAluno, nomeProfessor) {
+  criar(cod, nome, sala, capacidade, nomesAlunos = [], nomesProfessores = []) {
     try {
-      const aluno = alunos.find((aluno) => aluno.nome === nomeAluno);
-      const professor = professores.find((professor) => professor.nome === nomeProfessor);
-      if (aluno instanceof AlunoModel && professor instanceof Professor) {
-        const novaTurma = new TurmaModel(
-          cod,
-          nome,
-          sala,
-          capacidade,
-          aluno,
-          professor
-        );
-        turmas.push(novaTurma);
-        console.table(novaTurma);
-      } else {
-        console.log("Aluno ou professor inválido(s)!");
+      const alunosEncontrados = nomesAlunos.map(nomeAluno => 
+        alunos.find(aluno => aluno.nome === nomeAluno)
+      ).filter(aluno => aluno instanceof AlunoModel);
+
+      const professoresEncontrados = nomesProfessores.map(nomeProfessor => 
+        professores.find(professor => professor.nome === nomeProfessor)
+      ).filter(professor => professor instanceof Professor);
+
+      if (alunosEncontrados.length === 0 || professoresEncontrados.length === 0) {
+        console.log("Alunos ou professores inválido(s)!");
+        return;
       }
+
+      const novaTurma = new TurmaModel(
+        cod,
+        nome,
+        sala,
+        capacidade,
+        alunosEncontrados,
+        professoresEncontrados
+      );
+      turmas.push(novaTurma);
+      console.table(novaTurma);
     } catch (error) {
       console.error("Erro ao tentar criar turma", error.message);
     }
   }
 
   // Editar dados de uma turma
-  editar(cod, novoNome, novaSala, novaCapacidade, nomeNovoAluno, nomeNovoProfessor) {
+  editar(cod, novoNome, novaSala, novaCapacidade, nomesNovosAlunos, nomesNovosProfessores) {
     try {
-      const aluno = alunos.find((aluno) => aluno.nome === nomeNovoAluno);
-      const professor = professores.find((professor) => professor.nome === nomeNovoProfessor);
       const turma = turmas.find((turma) => turma.getCod === cod);
       if (!turma) {
         return console.log("Turma não encontrada!");
       }
-      if (!(aluno instanceof AlunoModel)) {
-        return console.log("Aluno inválido!");
+
+      if (nomesNovosAlunos) {
+        const alunosEncontrados = nomesNovosAlunos.map(nomeAluno => 
+          alunos.find(aluno => aluno.nome === nomeAluno)
+        ).filter(aluno => aluno instanceof AlunoModel);
+
+        if (alunosEncontrados.length > 0) {
+          turma.alunos = alunosEncontrados;
+        } else {
+          return console.log("Alunos inválidos!");
+        }
       }
-      if (!(professor instanceof Professor)) {
-        return console.log("Professor inválido!");
+
+      if (nomesNovosProfessores) {
+        const professoresEncontrados = nomesNovosProfessores.map(nomeProfessor => 
+          professores.find(professor => professor.nome === nomeProfessor)
+        ).filter(professor => professor instanceof Professor);
+
+        if (professoresEncontrados.length > 0) {
+          turma.professores = professoresEncontrados;
+        } else {
+          return console.log("Professores inválidos!");
+        }
       }
+
       turma.nome = novoNome || turma.nome;
       turma.sala = novaSala || turma.sala;
       turma.capacidade = novaCapacidade || turma.capacidade;
-      turma.aluno = novoAluno || turma.aluno;
-      turma.professor = novoProfessor || turma.professor;
+      
+      console.table(turma);
     } catch (error) {
       console.error("Erro ao tentar atualizar a turma", error.message);
     }
@@ -102,3 +126,4 @@ export class TurmaController {
     }
   }
 }
+
